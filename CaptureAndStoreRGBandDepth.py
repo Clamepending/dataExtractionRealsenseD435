@@ -5,9 +5,10 @@ import csv
 import numpy as np                        # fundamental package for scientific computing
 import matplotlib.pyplot as plt  
 import pandas as pd 
+import time
 
 rs = RealsenseCamera()
-directory = r'D:\DataFromRealsense'
+directory = r'C:\Users\sotao\Desktop\Data'
 
 os.chdir(directory)
 # dec_filter = rs.decimation_filter ()   # Decimation - reduces depth frame density
@@ -23,10 +24,9 @@ for x in range(30):
     cv2.imshow("iage", rgb_frame)
     cv2.imwrite(('ayyyyyyy' + str(x) + '.jpg'), rgb_frame)
 
-
-    # np.savetxt("D:/DataFromRealsense/depth" + str(x) + ".csv", depth_frame, delimiter=',')
-    pd.DataFrame(depth_frame).to_csv("D:/DataFromRealsense/depth" + str(x) + ".csv", header=None, index=None)
-    
+    start = time.time()
+    pd.DataFrame(depth_frame).to_csv("Depth" + str(x) + ".csv", header=None, index=None)
+    print("it took milliseconds: " + str(time.time() - start))
     # colorizer = rs.colorizer()
     # colorized_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data())
 
