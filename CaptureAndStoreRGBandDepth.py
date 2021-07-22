@@ -4,7 +4,7 @@ import os
 import csv
 import numpy as np                        # fundamental package for scientific computing
 import matplotlib.pyplot as plt  
-
+import pandas as pd 
 
 rs = RealsenseCamera()
 directory = r'D:\DataFromRealsense'
@@ -23,9 +23,9 @@ for x in range(30):
     cv2.imshow("iage", rgb_frame)
     cv2.imwrite(('ayyyyyyy' + str(x) + '.jpg'), rgb_frame)
 
-    with open("depthcsv" + str(x) + ".csv","w+") as my_csv:
-        csvWriter = csv.writer(my_csv,delimiter=',')
-        csvWriter.writerows(depth_frame)
+
+    # np.savetxt("D:/DataFromRealsense/depth" + str(x) + ".csv", depth_frame, delimiter=',')
+    pd.DataFrame(depth_frame).to_csv("D:/DataFromRealsense/depth" + str(x) + ".csv", header=None, index=None)
     
     # colorizer = rs.colorizer()
     # colorized_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data())
