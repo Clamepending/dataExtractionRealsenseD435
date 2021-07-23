@@ -10,6 +10,8 @@ import time
 import scipy as sp
 import scipy.ndimage
 
+numberOfPics = 100
+
 rs = RealsenseCamera()
 directory = r'C:\Users\sotao\Desktop\Data'
 
@@ -18,16 +20,15 @@ os.chdir(directory)
 # spat_filter = rs.spatial_filter()          # Spatial    - edge-preserving spatial smoothing
 # temp_filter = rs.temporal_filter()    # Temporal   - reduces temporal noise
 # hole_filter = rs.hole_filling_filter() #Hole filling
-temporaryRGB = [[[0 for col in range(1280)]for row in range(720)] for x in range(100)]
 temporaryDepth = array([[0 for col in range(1280)]for row in range(720)])
 temporaryDepth = temporaryDepth.reshape((temporaryDepth.shape[0], temporaryDepth.shape[1], 1))
 
 #720p
 #sigma = [1, 1] #How big the blur is
-for x in range(100):
+for x in range(numberOfPics):
     start = time.time()
     ret, rgb_frame, depth_frame = rs.get_frame_stream()
-    temporaryRGB[x] = rgb_frame
+    #temporaryRGB[x] = rgb_frame
     print("type : " + str(type(temporaryDepth)) + " shape: " + str(temporaryDepth.shape))
     
     temporaryDepth = np.concatenate( ( temporaryDepth, depth_frame.reshape(depth_frame.shape[0], depth_frame.shape[1], 1) ) , axis=-1) #np.concatenate((temporaryDepth, depth_frame.reshape(depth_frame.shape[0], depth_frame.shape[1], 1)), 2) #np.dstack((temporaryDepth, depth_frame))
@@ -45,7 +46,7 @@ for x in range(100):
     cv2.imshow("iage", temporaryDepth[:, :,x]/4000.0) 
 
     #SAVE STUFF
-    # cv2.imwrite(('ayyyyyyy' + str(x) + '.jpg'), rgb_frame)
+    cv2.imwrite(('ayyyyyyy' + str(x) + '.jpg'), rgb_frame)
     # pd.DataFrame(depth_frame).to_csv("Depth" + str(x) + ".csv", header=None, index=None)
     
 
@@ -57,4 +58,8 @@ for x in range(100):
     # plt.rcParams['figure.figsize'] = [8, 4]
     # plt.imshow(colorized_depth)
     print("it took milliseconds: " + str(time.time() - start))
-    cv2.waitKey(30)
+    cv2.waitKey(10)
+print("saving csv")
+for i in range(temporaryDepth.shape[2]):
+    pd.DataFrame(temporaryDepth[:, :, i]).to_csv("Depth" + str(x) + ".csv", header=None, index=None)
+print("shape: " + str(temporaryDepth[:,:,1].shape))
