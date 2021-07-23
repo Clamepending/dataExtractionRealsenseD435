@@ -10,10 +10,10 @@ import time
 import scipy as sp
 import scipy.ndimage
 
-numberOfPics = 100
+numberOfPics = 300
 
 rs = RealsenseCamera()
-directory = r'C:\Users\sotao\Desktop\Data'
+directory = r'C:\Users\sotao\Desktop\Data\Book'
 
 os.chdir(directory)
 # dec_filter = rs.decimation_filter ()   # Decimation - reduces depth frame density
@@ -59,7 +59,12 @@ for x in range(numberOfPics):
     # plt.imshow(colorized_depth)
     print("it took milliseconds: " + str(time.time() - start))
     cv2.waitKey(10)
-print("saving csv")
+print("DONE!!!!!! saving csv")
+print(str(temporaryDepth.shape[2]))
+
+#save the depth files. The first one is empty so skiup over that
 for i in range(temporaryDepth.shape[2]):
-    pd.DataFrame(temporaryDepth[:, :, i]).to_csv("Depth" + str(x) + ".csv", header=None, index=None)
+    print(str(i))
+    if(i != 0):
+        pd.DataFrame(temporaryDepth[:, :, i]).to_csv("Depth" + str(i - 1) + ".csv", header=None, index=None)
 print("shape: " + str(temporaryDepth[:,:,1].shape))
