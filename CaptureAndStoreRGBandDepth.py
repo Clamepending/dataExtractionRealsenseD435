@@ -1,14 +1,10 @@
 import cv2
 from realsense_camera import *
 import os
-import csv
 import numpy as np                        # fundamental package for scientific computing
 from numpy import array
-import matplotlib.pyplot as plt  
 import pandas as pd 
 import time
-import scipy as sp
-import scipy.ndimage
 
 numberOfPics = 30
 
